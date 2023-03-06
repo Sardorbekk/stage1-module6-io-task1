@@ -3,44 +3,29 @@ package com.epam.mjc.io;
 import java.io.*;
 
 
-
 public class FileReader {
 
-    public Profile getDataFromFile(File file)  {
-        DataInputStream in = null;
-        BufferedReader out = null;
+    public Profile getDataFromFile(File file) {
         try {
+            FileInputStream fstream = new FileInputStream(file);
+            DataInputStream in = new DataInputStream(fstream);
+            BufferedReader out = new BufferedReader(new InputStreamReader(in));
 
-            FileInputStream fstream=new FileInputStream(file);
-             in = new DataInputStream(fstream);
-             out=new BufferedReader(new InputStreamReader(in));
-            String strLine;
+            String nameLine = out.readLine();
+            String ageLine = out.readLine();
+            String emailLine = out.readLine();
+            String phoneLine = out.readLine();
 
-
-            while ((strLine=out.readLine())!=null){
-                System.out.println(strLine);
-            }
-
+            String name = nameLine.split(": ")[1];
+            Integer age = Integer.parseInt(ageLine.split(": ")[1]);
+            String email = emailLine.split(": ")[1];
+            Long phone = Long.parseLong(phoneLine.split(": ")[1]);
+            in.close();
+            out.close();
+            return new Profile(name, age, email, phone);
         } catch (IOException e) {
-
-            e.getMessage();
+            System.out.println(e.getMessage());
         }
-        finally {
-
-
-            try {
-                in.close();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-            try {
-                out.close();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        }
-
-
-        return new  Profile();
+        return new Profile();
     }
 }
