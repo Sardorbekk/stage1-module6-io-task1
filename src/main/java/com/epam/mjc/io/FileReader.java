@@ -7,9 +7,10 @@ public class FileReader {
 
     public Profile getDataFromFile(File file) {
         BufferedReader out = null;
+        DataInputStream in=null;
         try {
             FileInputStream fstream = new FileInputStream(file);
-            DataInputStream in = new DataInputStream(fstream);
+             in = new DataInputStream(fstream);
             out = new BufferedReader(new InputStreamReader(in));
 
             String nameLine = out.readLine();
@@ -20,15 +21,15 @@ public class FileReader {
             Integer age = Integer.parseInt(ageLine.split(": ")[1]);
             String email = emailLine.split(": ")[1];
             Long phone = Long.parseLong(phoneLine.split(": ")[1]);
-            in.close();
-            out.close();
+
             return new Profile(name, age, email, phone);
         } catch (IOException e) {
             System.out.println(e.getMessage());
         } finally {
             try {
+                 in.close();
                 out.close();
-            } catch (IOException e) {
+            } catch (NullPointerException | IOException e) {
                 e.printStackTrace();
             }
         }
